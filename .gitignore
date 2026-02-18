@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.env
+
+# Data
+data/raw/
+data/processed/
+data/features/
+
+# Artifacts
+artifacts/models/
+artifacts/logs/
+
+# Mac
+.DS_Store

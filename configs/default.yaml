@@ -1,0 +1,17 @@
+dataset:
+  name: uci_har
+  url: "https://archive.ics.uci.edu/ml/machine-learning-databases/00240/UCI%20HAR%20Dataset.zip"
+  raw_dir: "data/raw/uci_har"
+  zip_path: "data/raw/uci_har.zip"
+  expected_root: "UCI HAR Dataset"
+
+  preprocess:
+  processed_path: "data/processed/uci_har_windows.npz"
+  use_signals: true
+
+  split:
+  processed_path: "data/processed/uci_har_windows.npz"
+  split_path: "data/processed/splits_subject_holdout.npz"
+  seed: 42
+  test_frac: 0.2
+  val_frac: 0.2

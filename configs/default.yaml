@@ -5,13 +5,23 @@ dataset:
   zip_path: "data/raw/uci_har.zip"
   expected_root: "UCI HAR Dataset"
 
-  preprocess:
+preprocess:
   processed_path: "data/processed/uci_har_windows.npz"
   use_signals: true
 
-  split:
+split:
   processed_path: "data/processed/uci_har_windows.npz"
   split_path: "data/processed/splits_subject_holdout.npz"
   seed: 42
   test_frac: 0.2
   val_frac: 0.2
+
+train:
+  seeds: [42, 123, 999]
+  processed_path: "data/processed/uci_har_windows.npz"
+  split_path: "data/processed/splits_subject_holdout.npz"
+  batch_size: 64
+  epochs: 10
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  model_save_path: "artifacts/models/cnn1d_best.pt"

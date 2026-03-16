@@ -28,7 +28,7 @@ def main():
     type=str,
     help="Pipeline stage (acquire, preprocess, split, features, train, train_lstm, train_cnn_lstm, lstm_test, cnn_lstm_test, evaluate, baseline_lr, baseline_rf)"
     )
-    
+
     parser.add_argument("--config", type=str, default="configs/default.yaml", help="Path to YAML config")
     parser.add_argument("--model", type=str, help="cnn | lstm | cnn_lstm")
     parser.add_argument("--model_path", type=str, help="path to model checkpoint")
@@ -121,6 +121,7 @@ def main():
         run_logistic_regression(
             dataset_root=dataset_root,
             split_path=split_path,
+            output_dir=Path("artifacts/plots"),
         )
 
     elif args.stage == "baseline_rf":
@@ -133,6 +134,7 @@ def main():
         run_random_forest(
             dataset_root=dataset_root,
             split_path=split_path,
+            output_dir=Path("artifacts/plots"),
         )
 
     elif args.stage == "train_lstm":
@@ -188,6 +190,7 @@ def main():
             model_path=model_path,
             processed_path=Path(tcfg.get("processed_path")),
             split_path=Path(tcfg.get("split_path")),
+            output_dir=Path("artifacts/plots"),
         )
 
     else:

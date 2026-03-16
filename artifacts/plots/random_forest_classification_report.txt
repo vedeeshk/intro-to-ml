@@ -1,0 +1,24 @@
+Model: Random Forest
+Accuracy: 0.9283
+
+Confusion Matrix
+[[354   7   5   0   0   0]
+ [  1 305   4   1  14   0]
+ [  3  59 246   0   0   0]
+ [  0   0   0 378   5   0]
+ [  0   0   0  59 348   0]
+ [  0   0   0   0   0 416]]
+
+Classification Report
+                    precision    recall  f1-score   support
+
+           WALKING       0.99      0.97      0.98       366
+  WALKING_UPSTAIRS       0.82      0.94      0.88       325
+WALKING_DOWNSTAIRS       0.96      0.80      0.87       308
+           SITTING       0.86      0.99      0.92       383
+          STANDING       0.95      0.86      0.90       407
+            LAYING       1.00      1.00      1.00       416
+
+          accuracy                           0.93      2205
+         macro avg       0.93      0.92      0.92      2205
+      weighted avg       0.93      0.93      0.93      2205

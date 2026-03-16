@@ -1,0 +1,24 @@
+Model: Logistic Regression
+Accuracy: 0.9646
+
+Confusion Matrix
+[[362   4   0   0   0   0]
+ [  0 325   0   0   0   0]
+ [  9  29 270   0   0   0]
+ [  0   0   0 368  15   0]
+ [  0   0   0  21 386   0]
+ [  0   0   0   0   0 416]]
+
+Classification Report
+                    precision    recall  f1-score   support
+
+           WALKING       0.98      0.99      0.98       366
+  WALKING_UPSTAIRS       0.91      1.00      0.95       325
+WALKING_DOWNSTAIRS       1.00      0.88      0.93       308
+           SITTING       0.95      0.96      0.95       383
+          STANDING       0.96      0.95      0.96       407
+            LAYING       1.00      1.00      1.00       416
+
+          accuracy                           0.96      2205
+         macro avg       0.97      0.96      0.96      2205
+      weighted avg       0.97      0.96      0.96      2205

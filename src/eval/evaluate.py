@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""
+Evaluate trained deep learning models on the UCI HAR test set.
+
+This module loads a saved checkpoint, rebuilds the test dataset using the
+same train-set normalization pipeline, computes predictions, and saves
+confusion matrices and classification reports.
+"""
+
 from pathlib import Path
 
 import numpy as np
@@ -8,7 +16,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
 from torch.utils.data import DataLoader
 
-from src.data.dataset import HarDataConfig, UciHarWindowDataset
+from src.pipeline.dataset import HarDataConfig, UciHarWindowDataset
 from src.models.cnn1d import CNN1D
 from src.models.lstm import LSTMModel
 from src.models.cnn_lstm import CNNLSTMModel
@@ -24,7 +32,15 @@ ACTIVITY_NAMES = [
 ]
 
 
-def load_model(model_type: str, model_path: Path, device: torch.device):
+def get_device() -> torch.device:
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    return torch.device("cpu")
+
+
+def load_model(model_type: str, model_path: Path, device: torch.device) -> torch.nn.Module:
     if model_type == "cnn":
         model = CNN1D(in_channels=6, num_classes=6)
     elif model_type == "lstm":
@@ -61,7 +77,6 @@ def plot_confusion_matrix(
         row_sums = display_cm.sum(axis=1, keepdims=True)
         display_cm = np.divide(display_cm, row_sums, where=row_sums != 0)
 
-    # light blue heatmap
     im = ax.imshow(display_cm, cmap="Blues")
 
     ax.set_title(title, fontsize=14, pad=10)
@@ -73,13 +88,11 @@ def plot_confusion_matrix(
     ax.set_xticklabels(class_names, rotation=45, ha="right")
     ax.set_yticklabels(class_names)
 
-    # grid lines between cells
     ax.set_xticks(np.arange(-0.5, len(class_names), 1), minor=True)
     ax.set_yticks(np.arange(-0.5, len(class_names), 1), minor=True)
     ax.grid(which="minor", color="gray", linestyle="-", linewidth=0.8)
     ax.tick_params(which="minor", bottom=False, left=False)
 
-    # choose text color based on cell darkness
     threshold = display_cm.max() / 2.0 if display_cm.max() > 0 else 0.0
 
     for i in range(display_cm.shape[0]):
@@ -113,7 +126,7 @@ def evaluate_model(
     split_path: Path,
     output_dir: Path,
 ) -> None:
-    device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+    device = get_device()
 
     data_cfg = HarDataConfig(
         processed_path=processed_path,
@@ -121,12 +134,12 @@ def evaluate_model(
         normalize=True,
     )
 
-    # Fit normalization on train split only
+    # Fit normalization on train split only, then reuse it for test
     train_ds = UciHarWindowDataset(data_cfg, "train")
     norm_stats = train_ds.get_norm_stats()
 
     test_ds = UciHarWindowDataset(data_cfg, "test", norm_stats=norm_stats)
-    loader = DataLoader(test_ds, batch_size=64, shuffle=False)
+    test_loader = DataLoader(test_ds, batch_size=64, shuffle=False)
 
     model = load_model(model_type, model_path, device)
 
@@ -134,7 +147,7 @@ def evaluate_model(
     y_pred = []
 
     with torch.no_grad():
-        for x, y in loader:
+        for x, y in test_loader:
             x = x.to(device)
             logits = model(x)
             preds = torch.argmax(logits, dim=1).cpu().numpy()

@@ -1,0 +1,24 @@
+Model: CNN-RF Hybrid
+Accuracy: 0.9175
+
+Confusion Matrix
+[[366   0   0   0   0   0]
+ [  0 325   0   0   0   0]
+ [  0   2 306   0   0   0]
+ [  0   0   0 301  36  46]
+ [  0   0   0  40 354  13]
+ [  4   0   0  22  19 371]]
+
+Classification Report
+                    precision    recall  f1-score   support
+
+           WALKING       0.99      1.00      0.99       366
+  WALKING_UPSTAIRS       0.99      1.00      1.00       325
+WALKING_DOWNSTAIRS       1.00      0.99      1.00       308
+           SITTING       0.83      0.79      0.81       383
+          STANDING       0.87      0.87      0.87       407
+            LAYING       0.86      0.89      0.88       416
+
+          accuracy                           0.92      2205
+         macro avg       0.92      0.92      0.92      2205
+      weighted avg       0.92      0.92      0.92      2205

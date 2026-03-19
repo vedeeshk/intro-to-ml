@@ -1,25 +1,25 @@
 Model: cnn
-Checkpoint: artifacts/models/cnn1d_seed123.pt
-Accuracy: 0.8912
+Checkpoint: artifacts/models/cnn1d_seed999.pt
+Accuracy: 0.8785
 
 Confusion Matrix
 [[366   0   0   0   0   0]
- [  0 325   0   0   0   0]
- [  0   1 307   0   0   0]
- [  0   0   0 339  19  25]
- [  0   0   0 100 299   8]
- [  4   4   0  62  17 329]]
+ [  0 324   0   0   0   1]
+ [  2   1 305   0   0   0]
+ [  0   0   0 225  88  70]
+ [  0   0   0  58 334  15]
+ [  0   1   0  21  11 383]]
 
 Classification Report
                     precision    recall  f1-score   support
 
-           WALKING       0.99      1.00      0.99       366
-  WALKING_UPSTAIRS       0.98      1.00      0.99       325
-WALKING_DOWNSTAIRS       1.00      1.00      1.00       308
-           SITTING       0.68      0.89      0.77       383
-          STANDING       0.89      0.73      0.81       407
-            LAYING       0.91      0.79      0.85       416
+           WALKING       0.99      1.00      1.00       366
+  WALKING_UPSTAIRS       0.99      1.00      1.00       325
+WALKING_DOWNSTAIRS       1.00      0.99      1.00       308
+           SITTING       0.74      0.59      0.66       383
+          STANDING       0.77      0.82      0.80       407
+            LAYING       0.82      0.92      0.87       416
 
-          accuracy                           0.89      2205
-         macro avg       0.91      0.90      0.90      2205
-      weighted avg       0.90      0.89      0.89      2205
+          accuracy                           0.88      2205
+         macro avg       0.89      0.89      0.88      2205
+      weighted avg       0.88      0.88      0.88      2205

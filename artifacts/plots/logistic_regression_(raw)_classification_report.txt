@@ -1,0 +1,24 @@
+Model: Logistic Regression (Raw)
+Accuracy: 0.3156
+
+Confusion Matrix
+[[ 72  81  91  15  41  66]
+ [ 50 101  48  20  44  62]
+ [ 55  67  79  12  40  55]
+ [  0   6   3  54 223  97]
+ [  1  11   1  35 253 106]
+ [  0  14  13  28 224 137]]
+
+Classification Report
+                    precision    recall  f1-score   support
+
+           WALKING       0.40      0.20      0.26       366
+  WALKING_UPSTAIRS       0.36      0.31      0.33       325
+WALKING_DOWNSTAIRS       0.34      0.26      0.29       308
+           SITTING       0.33      0.14      0.20       383
+          STANDING       0.31      0.62      0.41       407
+            LAYING       0.26      0.33      0.29       416
+
+          accuracy                           0.32      2205
+         macro avg       0.33      0.31      0.30      2205
+      weighted avg       0.33      0.32      0.30      2205

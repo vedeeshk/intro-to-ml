@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+"""
+Hybrid CNN-LSTM model for human activity recognition.
+
+The CNN extracts local temporal features from raw IMU windows, and the LSTM models
+their evolution over time before classification.
+"""
+
 import torch
 import torch.nn as nn
 
@@ -9,12 +16,12 @@ class CNNLSTMModel(nn.Module):
     CNN-LSTM for HAR.
 
     Input:
-        (B, C, T) = (batch, 6, 128)
+        (B, C, T) = (batch_size, 6, 128)
 
-    Steps:
+    Internal flow:
         1. CNN extracts local temporal features
         2. transpose to sequence format
-        3. LSTM models temporal evolution of extracted features
+        3. LSTM models temporal evolution of CNN features
         4. classifier predicts activity class
 
     Output:
@@ -61,17 +68,22 @@ class CNNLSTMModel(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        x: (B, 6, 128)
-        returns: (B, 6)
+        Args:
+            x: input tensor of shape (B, 6, 128)
+
+        Returns:
+            Logits of shape (B, 6)
         """
-        # CNN expects (B, C, T)
+        # CNN feature extraction
         x = self.cnn(x)  # (B, cnn_channels, 32)
 
-        # LSTM expects (B, seq_len, features)
+        # Convert to sequence format for LSTM
         x = x.transpose(1, 2)  # (B, 32, cnn_channels)
 
-        output, (hidden, cell) = self.lstm(x)
+        # LSTM forward pass
+        _, (hidden, _) = self.lstm(x)
 
+        # Use final hidden state for classification
         last_hidden = hidden[-1]  # (B, lstm_hidden_size)
         logits = self.classifier(last_hidden)
         return logits

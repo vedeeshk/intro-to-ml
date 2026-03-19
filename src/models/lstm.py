@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+"""
+LSTM model for human activity recognition.
+
+Processes each window as a sequence of length 128 with 6 features per timestep.
+"""
+
 import torch
 import torch.nn as nn
 
@@ -8,14 +14,14 @@ class LSTMModel(nn.Module):
     """
     LSTM for HAR.
 
-    Expected input shape:
-        (batch_size, channels, timesteps) = (B, 6, 128)
+    Input:
+        (B, C, T) = (batch_size, 6, 128)
 
-    Internally we transpose to:
-        (batch_size, timesteps, channels) = (B, 128, 6)
+    Internal representation:
+        (B, T, C) = (batch_size, 128, 6)
 
     Output:
-        (batch_size, num_classes) = (B, 6)
+        (B, num_classes) = (B, 6)
     """
 
     def __init__(
@@ -45,15 +51,19 @@ class LSTMModel(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        x: (B, 6, 128)
-        returns: (B, 6)
+        Args:
+            x: input tensor of shape (B, 6, 128)
+
+        Returns:
+            Logits of shape (B, 6)
         """
         # Convert from (B, C, T) to (B, T, C)
         x = x.transpose(1, 2)
 
-        output, (hidden, cell) = self.lstm(x)
+        # LSTM forward pass
+        _, (hidden, _) = self.lstm(x)
 
-        # hidden shape: (num_layers, B, hidden_size)
+        # Take final layer hidden state
         last_hidden = hidden[-1]  # (B, hidden_size)
 
         logits = self.classifier(last_hidden)

@@ -1,18 +1,25 @@
 from __future__ import annotations
 
+"""
+1D convolutional neural network for human activity recognition from raw IMU windows.
+
+The model takes input tensors of shape (B, 6, 128), learns temporal features with
+stacked Conv1D blocks, and outputs logits for the 6 activity classes.
+"""
+
 import torch
 import torch.nn as nn
 
 
 class CNN1D(nn.Module):
     """
-    Simple 1D CNN for HAR.
+    1D CNN for HAR.
 
-    Input shape:
-        (batch_size, channels, timesteps) = (B, 6, 128)
+    Input:
+        (B, C, T) = (batch_size, 6, 128)
 
-    Output shape:
-        (batch_size, num_classes) = (B, 6)
+    Output:
+        (B, num_classes) = (B, 6)
     """
 
     def __init__(self, in_channels: int = 6, num_classes: int = 6):
@@ -45,8 +52,11 @@ class CNN1D(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        x: (B, 6, 128)
-        returns: (B, 6)
+        Args:
+            x: input tensor of shape (B, 6, 128)
+
+        Returns:
+            Logits of shape (B, 6)
         """
         x = self.features(x)
         x = self.classifier(x)
